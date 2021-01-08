@@ -6,5 +6,6 @@ export const COLORS = {
     midGrey: '#747980',
     white: '#ffff',
     red: '#CB3837',
-    lightWhite: '#F2F2F2'
+    lightWhite: '#F2F2F2',
+    inputPlaceholder: '#bfbdbd'
 }

@@ -128,7 +128,7 @@ function VaultStack() {
             <NavigationStack.Screen
                 name="EditItem"
                 component={EditPasswordItem}
-                options={({ route }) => ({ title: route.params.title })}
+                options={({ route }) => ({ title: route.params.title, headerLeftContainerStyle: { marginLeft: -15 }, headerTitleStyle: { marginLeft: -20 } })}
             />
         </NavigationStack.Navigator>
     )
