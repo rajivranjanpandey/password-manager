@@ -10,6 +10,7 @@ import { COLORS } from '../colors';
 import Home from '../../../screens/home';
 import PasswordList from '../../../screens/passwordList';
 import EditPasswordItem from '../../../screens/editPasswordItem';
+import Settings from '../../../screens/settings';
 
 const MyTheme = {
     ...DefaultTheme,
@@ -102,7 +103,7 @@ function VaultTabRouter() {
             lazy={true}//loads component only when tab is activated
         >
             <NavigationTab.Screen name="Vault" component={VaultStack} />
-            <NavigationTab.Screen name="Settings" component={PasswordList} />
+            <NavigationTab.Screen name="Settings" component={Settings} />
         </NavigationTab.Navigator>
     )
 }
