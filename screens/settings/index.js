@@ -5,6 +5,13 @@ import { COLORS } from '../../utils/misc/colors';
 import { settingsStyle } from './settings_style';
 
 export default class Settings extends Component {
+    state = {
+        editName: false,
+        editMobile: false
+    }
+    onEditClick = (stateName) => {
+        this.setState((prevState) => ({ [stateName]: !prevState[stateName] }));
+    }
     render() {
         return (
             <View style={styles.mainContainer}>
@@ -20,12 +27,15 @@ export default class Settings extends Component {
                         <View style={styles.inputContainer}>
                             <Text style={styles.inputLabel}>Name</Text>
                             <TextInput
+                                ref={ref => this.editNameIput = ref}
                                 keyboardType="name-phone-pad"
                                 defaultValue={'Rajiv Ranjan Pandey'}
                                 style={styles.userInput}
+                                editable={this.state.editName}
                             />
                         </View>
-                        <Icon name="pencil" size={20} color={COLORS.lightWhite} style={styles.settingIcon} />
+                        <Icon name={this.state.editName ? 'close' : 'pencil'} size={20} color={COLORS.lightWhite} style={styles.settingIcon} onPress={() => this.onEditClick('editName')} />
+
                     </View>
                     <View style={styles.itemSetting}>
                         <Icon name="cellphone-iphone" size={20} color={COLORS.midGrey} style={styles.settingIcon} />
@@ -35,9 +45,10 @@ export default class Settings extends Component {
                                 keyboardType="phone-pad"
                                 defaultValue={'8981215328'}
                                 style={styles.userInput}
+                                editable={this.state.editMobile}
                             />
                         </View>
-                        <Icon name="pencil" size={20} color={COLORS.lightWhite} style={styles.settingIcon} />
+                        <Icon name={this.state.editMobile ? 'close' : 'pencil'} size={20} color={COLORS.lightWhite} style={styles.settingIcon} onPress={() => this.onEditClick('editMobile')} />
                     </View>
                 </View>
                 <KeyboardAvoidingView style={styles.logoutContainer}>

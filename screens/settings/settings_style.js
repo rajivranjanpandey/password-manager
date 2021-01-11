@@ -70,7 +70,7 @@ export const settingsStyle = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'center',
-        marginTop: 20
+        marginTop: 50
     },
     logoutIcon: {
         backgroundColor: COLORS.midGrey,

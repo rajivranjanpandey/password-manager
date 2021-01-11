@@ -65,6 +65,7 @@ export default function IndexRouter() {
 
 function VaultTabRouter() {
     return (
+
         <NavigationTab.Navigator
             screenOptions={({ route }) => ({
                 tabBarIcon: ({ focused, color, size }) => {
@@ -90,7 +91,8 @@ function VaultTabRouter() {
                     borderTopWidth: 0,
                     position: 'absolute',
                     elevation: 0,
-                    bottom: 10,
+                    bottom: 0,
+
                 },
                 labelStyle: {
                     letterSpacing: 1.3,
@@ -98,6 +100,7 @@ function VaultTabRouter() {
                     textTransform: 'uppercase',
                     marginTop: 1,
                 },
+                keyboardHidesTabBar: true
             }}
             initialRouteName="Vault"
             lazy={true}//loads component only when tab is activated
@@ -116,7 +119,7 @@ function VaultStack() {
                     backgroundColor: COLORS.darkBlue,
                     elevation: 0
                 },
-                headerTintColor: COLORS.white
+                headerTintColor: COLORS.white,
             }}
         >
             <NavigationStack.Screen
