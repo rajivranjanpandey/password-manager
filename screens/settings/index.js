@@ -10,7 +10,12 @@ export default class Settings extends Component {
         editMobile: false
     }
     onEditClick = (stateName) => {
-        this.setState((prevState) => ({ [stateName]: !prevState[stateName] }));
+        this.setState((prevState) => ({ [stateName]: !prevState[stateName] }), () => {
+            if (this.state.editName) {
+                const refInput = this[`${stateName}Input`];
+                refInput.focus();
+            }
+        });
     }
     render() {
         return (
@@ -27,7 +32,8 @@ export default class Settings extends Component {
                         <View style={styles.inputContainer}>
                             <Text style={styles.inputLabel}>Name</Text>
                             <TextInput
-                                ref={ref => this.editNameIput = ref}
+                                key={`${this.state.editName}-name`}
+                                ref={ref => this.editNameInput = ref}
                                 keyboardType="name-phone-pad"
                                 defaultValue={'Rajiv Ranjan Pandey'}
                                 style={styles.userInput}
@@ -42,6 +48,8 @@ export default class Settings extends Component {
                         <View style={styles.inputContainer}>
                             <Text style={styles.inputLabel}>Mobile Number</Text>
                             <TextInput
+                                key={`${this.state.editName}-mobile`}
+                                ref={ref => this.editMobileInput = ref}
                                 keyboardType="phone-pad"
                                 defaultValue={'8981215328'}
                                 style={styles.userInput}
