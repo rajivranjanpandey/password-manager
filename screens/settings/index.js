@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Image, Text, View, TextInput, KeyboardAvoidingView } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { showImagePicker } from 'react-native-image-picker';
 import { COLORS } from '../../utils/misc/colors';
 import { settingsStyle } from './settings_style';
 
@@ -17,13 +18,24 @@ export default class Settings extends Component {
             }
         });
     }
+    onImgChoseClick = () => {
+        console.log('imgCLick')
+        const options = {
+            mediaType: 'photo',
+            storageOptions: {
+                skipBackup: true,
+                path: 'images',
+            },
+        }
+        showImagePicker(options, (response) => console.log(response));
+    }
     render() {
         return (
             <View style={styles.mainContainer}>
                 <View style={styles.userContainer}>
                     <Image source={require('../../assets/images/logo.jpg')} style={styles.imgContainer} blurRadius={10} />
-                    <View style={styles.profileContainer}>
-                        <Icon name="face-recognition" size={30} color={COLORS.lightBlue} style={styles.profileIcon} />
+                    <View style={styles.profileContainer} >
+                        <Icon name="face-recognition" size={30} color={COLORS.lightBlue} style={styles.profileIcon} onPress={() => this.onImgChoseClick()} />
                     </View>
                 </View>
                 <View style={styles.editContainer}>
