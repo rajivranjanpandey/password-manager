@@ -22,7 +22,8 @@ const MyTheme = {
 const NavigationStack = createStackNavigator();
 const NavigationTab = createBottomTabNavigator();
 
-export default function IndexRouter() {
+export default function IndexRouter(props) {
+    console.log('nvigation_props', props);
     return (
         <NavigationContainer theme={MyTheme}>
             <View style={{

@@ -8,6 +8,8 @@
 
 import React from 'react';
 import IndexRouter from './utils/misc/config/navigate';
+import { Provider } from 'mobx-react';
+import dataModels from './utils/misc/config/index-model';
 // import {
 //   SafeAreaView,
 //   StyleSheet,
@@ -27,7 +29,9 @@ import IndexRouter from './utils/misc/config/navigate';
 
 const App: () => React$Node = () => {
   return (
-    <IndexRouter />
+    <Provider stores={dataModels}>
+      <IndexRouter />
+    </Provider>
     // <>
     //   <StatusBar barStyle="dark-content" />
     //   <SafeAreaView>
