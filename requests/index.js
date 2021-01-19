@@ -1,26 +1,25 @@
 import axios from 'axios';
 
-const BASE_REQUEST = axios.create({
-    baseURL: 'http://localhost:5000',
-    headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
+const BASE_REQUEST = {
+    baseURL: 'https://jsonplaceholder.typicode.com',
+    // headers: { Accept: 'application/json' },
     timeout: '1000',
-    timeoutErrorMessage: 'Serer request timeout'
-});
-const methodHandler = (options, defaultHeader) => {
-    switch (options.emthod) {
+    timeoutErrorMessage: 'Serer request timeout',
+};
+const methodHandler = async (options) => {
+    switch (options.method) {
         case 'get':
-            return BASE_REQUEST
-                .get(options.url, { headers: defaultHeader })
-                .then(res => res)
-                .catch(e => { console.log(e); return null });
+            return axios
+                .get(options.url)
+                .then(res => { return res.data; })
+                .catch(e => { console.log('error', e); return null });
     }
 }
 export default async function request(url, options, authToken = false) {
-    let defaultHeader = {};
     if (authToken) {
-        defaultHeader = { 'X-Auth-Token': '124' };
+        BASE_REQUEST.defaults.headers.common['X-Auth-Token'] = { 'X-Auth-Token': '124' };
     }
-    options.url = url;
-    const response = await methodHandler(options, defaultHeader);
+    options.url = `${BASE_REQUEST.baseURL}${url}`;
+    const response = await methodHandler(options);
     return response;
 }

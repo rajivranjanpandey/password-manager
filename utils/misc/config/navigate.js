@@ -11,7 +11,8 @@ import Home from '../../../screens/home';
 import PasswordList from '../../../screens/passwordList';
 import EditPasswordItem from '../../../screens/editPasswordItem';
 import Settings from '../../../screens/settings';
-
+import { MobXProviderContext } from 'mobx-react';
+import { useStores } from './index-model';
 const MyTheme = {
     ...DefaultTheme,
     colors: {
@@ -23,7 +24,7 @@ const NavigationStack = createStackNavigator();
 const NavigationTab = createBottomTabNavigator();
 
 export default function IndexRouter(props) {
-    console.log('nvigation_props', props);
+
     return (
         <NavigationContainer theme={MyTheme}>
             <View style={{

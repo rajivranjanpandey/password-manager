@@ -1,6 +1,9 @@
 /* eslint-disable prettier/prettier */
+import { observer } from 'mobx-react';
 import React from 'react';
 import { View, SafeAreaView, StatusBar, Text, TextInput, Button, TouchableOpacity } from 'react-native';
+import { itemContext } from '../../models/itemModel';
+import dataModels, { useStores } from '../../utils/misc/config/index-model';
 import { HomeStyle } from './home_style';
 
 class Home extends React.Component {
@@ -10,6 +13,9 @@ class Home extends React.Component {
             message: ''
         }
     }
+    componentDidMount() {
+    }
+    static contextType = dataModels;
     onGetOtp = () => {
         const mobile = this.mobileInput + '';
         const errorState = this.state.error;
@@ -17,24 +23,27 @@ class Home extends React.Component {
             console.log(mobile);
             errorState.isError = false;
             errorState.message = '';
-            this.props.navigation.push('PasswordList');
+            this.context.ItemModel.setItemList(1);
+            // this.props.navigation.push('PasswordList');
         } else {
             errorState.isError = true;
             errorState.message = 'Please enter a valid number';
 
         }
-        this.setState({
-            error: errorState,
-        });
+        // this.setState({
+        //     error: errorState,
+        // });
     }
     render() {
+        console.log('props', this.context);
+
         return (
             <>
                 <StatusBar backgroundColor={styles.statusBar.backgroundColor} />
                 <SafeAreaView>
                     <View style={styles.container}>
                         <View style={styles.logoArea}>
-                            <Text>Logo View</Text>
+                            {/* <Text>{this.props.itemModel.passwordList}</Text> */}
                         </View>
                         <View style={styles.centerArea}>
                             <View nativeID={'mobileNumInput'}>
@@ -67,4 +76,11 @@ class Home extends React.Component {
     }
 }
 const styles = HomeStyle;
-export default Home;
+export default observer(Home);
+// export default observer((props) => {
+//     const ItemModel = React.useContext(itemContext);
+//     console.log('observer_props', ItemModel);
+
+//     return (<Home {...props} itemModel={ItemModel} />);
+
+// })
