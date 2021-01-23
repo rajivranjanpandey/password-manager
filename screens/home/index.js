@@ -1,9 +1,8 @@
 /* eslint-disable prettier/prettier */
 import { observer } from 'mobx-react';
 import React from 'react';
-import { View, SafeAreaView, StatusBar, Text, TextInput, TouchableOpacity, Animated, LayoutAnimation, Platform, UIManager } from 'react-native';
-import { itemContext } from '../../models/itemModel';
-import dataModels, { useStores } from '../../utils/misc/config/index-model';
+import { View, SafeAreaView, StatusBar, Text, TextInput, TouchableOpacity, Animated, LayoutAnimation, Platform, UIManager, Keyboard } from 'react-native';
+import dataModels from '../../utils/misc/config/index-model';
 import { HomeStyle } from './home_style';
 
 class Home extends React.Component {
@@ -15,6 +14,7 @@ class Home extends React.Component {
         scaleAnim: new Animated.Value(1),
         showOtpInput: false
     }
+    mobileNumber = null;
     componentDidMount() {
         if (Platform.OS === 'android') {
             if (UIManager.setLayoutAnimationEnabledExperimental) {
@@ -23,42 +23,53 @@ class Home extends React.Component {
         }
 
     }
-    static contextType = dataModels;
-    onGetOtp = () => {
+    static contextType = dataModels.UserModel;
+    onGetOtp = async () => {
         const mobile = this.mobileInput + '';
         const errorState = this.state.error;
         if (mobile.length === 10) {
             console.log(mobile);
             errorState.isError = false;
             errorState.message = '';
-            // this.context.ItemModel.setItemList(1);
-            Animated.timing(this.state.scaleAnim, {
-                toValue: 0,
-                duration: 500,
-                useNativeDriver: true
-            }).start(({ finished }) => {
-                // Once finished with animation we setState to show otpInput
-                if (finished) {
-                    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
-                    this.setState({
-                        error: errorState,
-                        showOtpInput: true
-                    })
-                }
-            });
+            const response = await this.context.getOtp({ mobile: Number(mobile) });
+            if (response) {
+                this.mobileNumber = Number(mobile);
+                Keyboard.dismiss(0);
+                Animated.timing(this.state.scaleAnim, {
+                    toValue: 0,
+                    duration: 500,
+                    useNativeDriver: true
+                }).start(({ finished }) => {
+                    // Once finished with animation we setState to show otpInput
+                    if (finished) {
+                        LayoutAnimation.configureNext(LayoutAnimation.Presets.spring)
+                        this.setState({
+                            error: errorState,
+                            showOtpInput: true
+                        })
+                    }
+                });
+            } else {
+                Keyboard.dismiss(0);
+            }
         } else {
             errorState.isError = true;
             errorState.message = 'Please enter a valid number';
             this.setState({ error: errorState });
         }
     }
-    onVerifyOtp = () => {
+    onVerifyOtp = async () => {
         const otp = this.otpInput + '';
         const errorState = this.state.error;
         if (otp.length === 4) {
             errorState.isError = false;
             errorState.message = '';
-            this.props.navigation.push('PasswordList');
+            const response = await this.context.verifyOtp({ mobile: this.mobileNumber, otp: Number(otp) });
+            if (response) {
+                this.props.navigation.push('PasswordList');
+            } else {
+                Keyboard.dismiss(0);
+            }
         } else {
             errorState.isError = true;
             errorState.message = 'Please enter a valid otp';

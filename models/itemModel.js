@@ -35,6 +35,4 @@ export default class ItemModel {
         return this.itemList;
     }
 }
-const obj = new ItemModel();
-export const itemContext = React.createContext(obj);
 

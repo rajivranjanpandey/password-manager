@@ -11,8 +11,8 @@ import Home from '../../../screens/home';
 import PasswordList from '../../../screens/passwordList';
 import EditPasswordItem from '../../../screens/editPasswordItem';
 import Settings from '../../../screens/settings';
-import { MobXProviderContext } from 'mobx-react';
-import { useStores } from './index-model';
+// import { MobXProviderContext } from 'mobx-react';
+
 const MyTheme = {
     ...DefaultTheme,
     colors: {
