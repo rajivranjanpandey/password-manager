@@ -28,8 +28,8 @@ export default class ListItem extends Component {
                 <TouchableOpacity activeOpacity={0.7} style={styles.parentHead} onPress={() => this.toggleExpand()}>
                     <Image style={styles.itemImg} source={{ uri: 'https://picsum.photos/seed/picsum/70/70' }} />
                     <View style={styles.titleContainer}>
-                        <Text style={styles.itemText}>{parentItem.title}</Text>
-                        <Text style={styles.itemAccount}>2 subaccounts</Text>
+                        <Text style={styles.itemText}>{parentItem.platform_name}</Text>
+                        <Text style={styles.itemAccount}>{parentItem.platform_passwords.length} subaccounts</Text>
                     </View>
                     <Icon style={styles.arrowIcon} name={this.state.expanded ? 'arrow-drop-up' : 'arrow-drop-down'} size={30} color={COLORS.midGrey} />
                 </TouchableOpacity>
@@ -38,19 +38,19 @@ export default class ListItem extends Component {
                     <View>
                         <View style={styles.childContainer}>
                             <FlatList
-                                data={parentItem.children}
+                                data={parentItem.platform_passwords}
                                 renderItem={({ item, index }) => {
-                                    const isLast = index === parentItem.children.length - 1;
+                                    const isLast = index === parentItem.platform_passwords.length - 1;
                                     return (
                                         <View style={[styles.childItemContainer, { marginBottom: isLast ? 0 : 3 }]}>
                                             <Icon name={'fiber-manual-record'} size={10} color={'#c6c4c4'} />
-                                            <Text style={styles.childText}>{item.title}</Text>
+                                            <Text style={styles.childText}>{item.password_label}</Text>
                                         </View>
                                     );
                                 }
 
                                 }
-                                keyExtractor={(child) => child.id}
+                                keyExtractor={(child) => child._id}
                                 extraData={null}
                             />
                         </View>

@@ -7,6 +7,7 @@
  */
 
 import React from 'react';
+import AuthChecker from './components/authChecker';
 import IndexRouter from './utils/misc/config/navigate';
 // import {
 //   SafeAreaView,
@@ -28,7 +29,9 @@ import IndexRouter from './utils/misc/config/navigate';
 const App: () => React$Node = () => {
   return (
     // <Provider stores={dataModels}>
-    <IndexRouter />
+    <AuthChecker>
+      <IndexRouter />
+    </AuthChecker>
     // </Provider>
     // <>
     //   <StatusBar barStyle="dark-content" />

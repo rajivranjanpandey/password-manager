@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { makeAutoObservable, flow, observable, autorun } from 'mobx';
 import { getOtpApi, verifyOtpApi } from '../requests/otpApi';
 import showMessage from '../utils/error';
@@ -32,15 +33,23 @@ export default class UserModel {
             const response = yield verifyOtpApi(payload);
             if (response) {
                 this.userDetails = response;
+                yield AsyncStorage.setItem('@token', response.token);
                 return response;
             }
         } catch (e) {
             console.log(e)
         }
     }
+    *onLogout() {
+        yield AsyncStorage.removeItem('@token');
+        this.userDetails = null;
+    }
     get getUserDetails() {
         console.log('comutation_called');
         return this.userDetails;
     }
 }
-
+export function userLogout() {
+    const obj = new UserModel();
+    obj.onLogout();
+}

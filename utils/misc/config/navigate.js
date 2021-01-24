@@ -24,7 +24,9 @@ const NavigationStack = createStackNavigator();
 const NavigationTab = createBottomTabNavigator();
 
 export default function IndexRouter(props) {
-
+    React.useEffect(() => {
+        console.log('component_did_mount');
+    }, [])
     return (
         <NavigationContainer theme={MyTheme}>
             <View style={{
@@ -35,7 +37,7 @@ export default function IndexRouter(props) {
             }}>
                 <NavigationStack.Navigator
                     //    screenOptions
-                    initialRouteName="Home">
+                    initialRouteName={props.userToken ? 'PasswordList' : 'Home'}>
                     <NavigationStack.Screen
                         name="Home"
                         component={Home}
