@@ -46,17 +46,17 @@ export const listItemStyle = StyleSheet.create({
     childContainer: {
         // borderWidth: 2,
         // borderColor: COLORS.white,
+        // alignItems: 'flex-end'
     },
     childItemContainer: {
         // borderWidth: 2,
         // borderColor: COLORS.white,
-        width: '85%',
+        marginLeft: 83,
+        marginRight: 10
+    },
+    childSubContainer: {
         flexDirection: 'row',
-        justifyContent: 'center',
-
-        color: '#F2F2F2',
-        alignItems: 'center',
-        marginHorizontal: 5,
+        alignItems: 'center'
     },
     childText: {
         color: '#c6c4c4',
@@ -64,8 +64,19 @@ export const listItemStyle = StyleSheet.create({
         paddingHorizontal: 5,
         letterSpacing: 0.25,
     },
+    childPassword: {
+        // borderWidth: 2,
+        // borderColor: COLORS.white,
+        marginTop: 3,
+        marginLeft: 17,
+        marginRight: 10,
+        color: COLORS.lightWhite,
+        fontSize: 17,
+        flex: 1
+
+    },
     btnContainer: {
-        marginTop: 10,
+        marginTop: 25,
         flexDirection: 'row',
         justifyContent: 'flex-end',
     }

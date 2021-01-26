@@ -50,20 +50,34 @@ export const formStyle = StyleSheet.create({
     subListItemContainer: {
         // backgroundColor: 'rgba(56,137,255,0.4)',
         borderWidth: 2,
-        borderColor: COLORS.darkGrey
+        borderColor: COLORS.darkGrey,
     },
     subItemLabelInput: {
         borderBottomWidth: 2,
         borderColor: COLORS.darkGrey,
+        paddingLeft: 10,
+        color: COLORS.lightWhite,
+        letterSpacing: 0.5
     },
     subItemPasswordContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+    },
+    subItemPasswordInput: {
+        paddingLeft: 10,
+        color: COLORS.lightWhite,
+        letterSpacing: 0.5
     },
     generateIcon: {
         padding: 10,
         textAlign: 'center'
+    },
+    errorText: {
+        marginVertical: 7,
+        marginLeft: 5,
+        color: COLORS.lightRed,
+        letterSpacing: 0.5
     }
 });
 export const addBtnStyle = StyleSheet.create({

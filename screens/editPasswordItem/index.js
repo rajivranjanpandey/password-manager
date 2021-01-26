@@ -6,17 +6,25 @@ import { COLORS } from '../../utils/misc/colors';
 import { formStyle, addBtnStyle } from './editPasswordItem_style';
 
 const listObj = {
-    passwordLabel: '',
-    passwordStream: ''
+    password_label: '',
+    password_stream: ''
 }
 export default class EditPasswordItem extends Component {
     constructor(props) {
         super(props);
+        this.itemDetails = null;
         this.state = {
-            list: [this.getInitialListObj()]
+            list: this.setUpInitialList()
         }
-    }
 
+    }
+    setUpInitialList = () => {
+        this.itemDetails = this.props.route.params.data ?? null;
+        if (this.itemDetails)
+            return Array.from(this.itemDetails.platform_passwords)
+        else
+            return [this.getInitialListObj()];
+    }
     getInitialListObj = () => {
         return JSON.parse(JSON.stringify(listObj));
     }
@@ -27,13 +35,16 @@ export default class EditPasswordItem extends Component {
     }
     onAddMoreClick = () => {
         LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-        this.setState((prevState) => ({ list: prevState.list.concat([this.getInitialListObj]) }));
+        this.setState((prevState) => ({ list: prevState.list.concat([this.getInitialListObj()]) }));
     }
     onRemoveClick = (index) => {
         const prevList = this.state.list;
         prevList.splice(index, 1);
         LayoutAnimation.configureNext(LayoutAnimation.create(300, LayoutAnimation.Types.linear, LayoutAnimation.Properties.opacity));
         this.setState({ list: prevList });
+    }
+    onInputChange = (e, inputIndex, fieldType) => {
+        this.state.list[inputIndex][fieldType] = e.target.value;
     }
     render() {
         console.log(this.props);
@@ -51,8 +62,12 @@ export default class EditPasswordItem extends Component {
                     {
                         this.state.list.map((item, index) => {
                             const isLastIndex = index === this.state.list.length - 1;
+                            let errorObj = null;
+                            if (this.state.isError && this.state.errorArr[index]) {
+                                errorObj = this.state.errorArr[index].isError ? this.state.errorArr[index] : null;
+                            }
                             return (
-                                <HrLineView>
+                                <HrLineView key={`Item_${index}`}>
                                     {
                                         !isLastIndex &&
                                         <TouchableOpacity activeOpacity={0.7} style={styles.listPosition} onPress={() => this.onRemoveClick(index)}>
@@ -64,18 +79,23 @@ export default class EditPasswordItem extends Component {
                                             style={styles.subItemLabelInput}
                                             placeholder="Enter Password Label"
                                             placeholderTextColor={COLORS.inputPlaceholder}
+                                            defaultValue={item.password_label}
+                                            onChange={(e) => this.onInputChange(e, index, 'password_label')}
                                         />
                                         <View style={styles.subItemPasswordContainer}>
                                             <TextInput
                                                 style={styles.subItemPasswordInput}
                                                 placeholder="Enter Password Stream"
                                                 placeholderTextColor={COLORS.inputPlaceholder}
+                                                defaultValue={item.password_stream}
+                                                onChange={(e) => this.onInputChange(e, index, 'password_stream')}
                                             />
                                             <TouchableOpacity style={styles.generateIcon}>
                                                 <Icon name="wifi-protected-setup" size={20} color={COLORS.lightBlue} />
                                             </TouchableOpacity>
                                         </View>
                                     </View>
+                                    {errorObj && <Text style={styles.errorText}>{errorObj.message}</Text>}
                                 </HrLineView>
                             );
                         })

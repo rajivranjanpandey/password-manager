@@ -8,5 +8,6 @@ export const COLORS = {
     red: '#CB3837',
     lightWhite: '#F2F2F2',
     inputPlaceholder: '#bfbdbd',
-    lightGrey: '#ccc5c5'
+    lightGrey: '#ccc5c5',
+    lightRed: '#e05e5e'
 }

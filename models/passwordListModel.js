@@ -15,6 +15,7 @@ export default class PasswordListModel {
     *fetchPasswordList(payload) {
         try {
             const response = yield getPasswordList(payload);
+            console.log(response);
             if (response) {
                 this.storedPasswordList = response;
             }

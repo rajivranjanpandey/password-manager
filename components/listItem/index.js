@@ -9,7 +9,7 @@ export default class ListItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expanded: false,
+            expanded: true,
         };
         // For use pf LayoutAnimation in android we need to enable it.
         if (Platform.OS === 'android') {
@@ -43,8 +43,15 @@ export default class ListItem extends Component {
                                     const isLast = index === parentItem.platform_passwords.length - 1;
                                     return (
                                         <View style={[styles.childItemContainer, { marginBottom: isLast ? 0 : 3 }]}>
-                                            <Icon name={'fiber-manual-record'} size={10} color={'#c6c4c4'} />
-                                            <Text style={styles.childText}>{item.password_label}</Text>
+                                            <View style={styles.childSubContainer}>
+                                                <Icon name={'fiber-manual-record'} size={10} color={'#c6c4c4'} />
+                                                <Text style={styles.childText}>{item.password_label}</Text>
+                                            </View>
+                                            <View style={styles.childSubContainer}>
+                                                <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.childPassword}>sjdgsjdgjsgdjgsjdgjsgdkjgskdgkjgsdkjgjkdgkjgfkjdgkfjgkjdfgksgdfkjsgdjfgsj</Text>
+                                                <Icon name={'content-paste'} size={18} color={COLORS.lightBlue} />
+
+                                            </View>
                                         </View>
                                     );
                                 }
@@ -58,14 +65,14 @@ export default class ListItem extends Component {
                             <CustomButton
                                 onPress={() => this.props.itemActionClick(parentItem, 'share')}
                                 // title={'Share'}
-                                icon={{ show: true, name: 'share', size: 25, color: COLORS.lightWhite }}
+                                icon={{ show: true, name: 'share', size: 25, color: COLORS.lightBlue }}
                                 styleObj={editBtnStyle}
 
                             />
                             <CustomButton
                                 onPress={() => this.props.itemActionClick(parentItem, 'share')}
                                 // title={'Edit'}
-                                icon={{ show: true, name: 'create', size: 25, color: COLORS.midGrey }}
+                                icon={{ show: true, name: 'create', size: 25, color: '#c6c4c4' }}
                                 styleObj={editBtnStyle}
                             />
                             <CustomButton

@@ -1,0 +1,25 @@
+NOTE 1 :
+    With use of react navigation we might think that when user navigates from screen A to screen B
+    . ComponentWillUnmount of Screen A is called while componentDidMount of Screen B is called,
+        whereas,
+        this doesnt happen because of the native device complex mobile navigation.
+        So to handle this we can use the two events emitted by navigation to the component
+        i) focus (fires when component is active) 2) blur (fires when component is not visible to user)
+        To catch these two events we have two methods
+        i) "addListener" to props.navigation 
+            Syntax : React.useEffect(()=>{
+                const unsubscribe = props.navigation.addListener('focus',()=>{
+                    // do something
+                });
+                return unsubscribe;
+            },[props.navigation]);
+        ii) use hooks like "useFocusEffect" (provided by react-navigation) which works like useEffect but it automatically ties to navigation
+            Syntax : useFocusEffect(()=>{
+                React.useCallback(()=>{
+                    // do something when screen is focused
+                    return ()=>{
+                        // do something when screen is blur
+                    }
+                });
+            },[]);
+        iii) use othe hook "useIsFocused" which returns a boolean wether screen is focused or not.

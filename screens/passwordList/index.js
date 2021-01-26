@@ -1,18 +1,22 @@
 import React from 'react';
 import { SafeAreaView, FlatList } from 'react-native';
+import { observer } from 'mobx-react';
+import { useFocusEffect } from '@react-navigation/native';
 import { PasswordListStyle } from './passwordList_style';
 import ListItem from '../../components/listItem';
 import dataModels from '../../utils/misc/config/index-model';
-import { observer } from 'mobx-react';
 
 function PasswordList(props) {
     const listModel = React.useContext(dataModels.PasswordListModel);
-    React.useEffect(() => {
-        listModel.fetchPasswordList();
-    }, []);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            listModel.fetchPasswordList();
+        }, [])
+    );
     const list = listModel.passwordList;
     const itemActionClick = (item, action_type) => {
-        props.navigation.push('EditItem', { title: 'Item 1' });
+        props.navigation.push('EditItem', { title: item.platform_name, data: item });
     }
     return (
         <SafeAreaView>
