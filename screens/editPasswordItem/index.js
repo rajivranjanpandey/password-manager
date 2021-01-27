@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Button, LayoutAnimation, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Button, KeyboardAvoidingView, LayoutAnimation, Text, TextInput, TouchableOpacity, View, ScrollView } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import CustomButton from '../../components/customButton';
 import { COLORS } from '../../utils/misc/colors';
@@ -14,9 +14,19 @@ export default class EditPasswordItem extends Component {
         super(props);
         this.itemDetails = null;
         this.state = {
-            list: this.setUpInitialList()
+            list: this.setUpInitialList(),
+            platformName: this.setUpInitialName(),
+            errorArr: [],
+            isError: false,
+            errorMsg: ''
         }
-
+    }
+    setUpInitialName = () => {
+        if (this.itemDetails) {
+            return this.itemDetails.platform_name;
+        } else {
+            return '';
+        }
     }
     setUpInitialList = () => {
         this.itemDetails = this.props.route.params.data ?? null;
@@ -29,8 +39,10 @@ export default class EditPasswordItem extends Component {
         return JSON.parse(JSON.stringify(listObj));
     }
     componentDidMount() {
+        console.log(this.props.navigation)
         this.props.navigation.setOptions({
-            headerRight: () => <Button title="HI !" />
+            headerRight: () => <Button title="Save" onPress={() => this.onSave()} />,
+            tabBarVisible: false
         });
     }
     onAddMoreClick = () => {
@@ -43,18 +55,70 @@ export default class EditPasswordItem extends Component {
         LayoutAnimation.configureNext(LayoutAnimation.create(300, LayoutAnimation.Types.linear, LayoutAnimation.Properties.opacity));
         this.setState({ list: prevList });
     }
-    onInputChange = (e, inputIndex, fieldType) => {
-        this.state.list[inputIndex][fieldType] = e.target.value;
+    onListInputChange = (newVal, inputIndex, fieldType) => {
+        this.state.list[inputIndex][fieldType] = newVal;
+    }
+    checkForErrors = () => {
+        let isError = false;
+        let tempList = this.state.list;
+        if (this.state.platformName?.length) {
+            this.state.errorMsg = '';
+            console.log(tempList)
+            const lastElement = this.state.list[this.state.list.length - 1];
+            const tempErrorState = this.state.errorArr;
+            if (lastElement) {
+                if (!lastElement.password_label?.length && !lastElement.password_stream?.length)
+                    tempList = this.state.list.slice(0, this.state.list.length - 1);
+            }
+            tempList.forEach((entry, index) => {
+                if (!entry.password_label?.length || !entry.password_stream?.length) {
+                    isError = true;
+                    tempErrorState[index] = { 'isError': true, 'message': 'Please fill the required fields' }
+                } else {
+                    tempErrorState[index] = { 'isError': false, 'message': '' };
+                }
+            });
+            this.state.errorArr = tempErrorState;
+        } else {
+            isError = true;
+            this.state.errorMsg = 'Kindly enter platform name';
+        }
+        return { isError, tempList };
+    }
+    onSave = () => {
+        const { isError, tempList: pwdList } = this.checkForErrors();
+        if (!isError) {
+            const payload = {
+                itemId: this.itemDetails._id,
+                platform_name: this.state.platformName,
+                platform_passwords: pwdList
+            }
+            console.log(payload);
+        }
+        this.setState({ isError });
     }
     render() {
-        console.log(this.props);
+
         return (
-            <View>
-                <TextInput
-                    style={styles.nameInput}
-                    placeholder="Enter Platform Name"
-                    placeholderTextColor={COLORS.inputPlaceholder}
-                />
+            <ScrollView style={{ paddingBottom: 15 }}>
+                {
+                    this.state.errorMsg.length > 0 ?
+                        <TextInput
+                            style={[styles.nameInput, { borderColor: COLORS.lightRed }]}
+                            placeholder={this.state.errorMsg}
+                            defaultValue={this.state.platformName}
+                            placeholderTextColor={COLORS.lightRed}
+                            onChangeText={(newVal) => this.state.platformName = newVal}
+                        />
+                        :
+                        <TextInput
+                            style={styles.nameInput}
+                            placeholder={"Enter Platform Name"}
+                            defaultValue={this.state.platformName}
+                            placeholderTextColor={COLORS.inputPlaceholder}
+                            onChangeText={(newVal) => this.state.platformName = newVal}
+                        />
+                }
                 <View style={styles.subListContainer}>
                     <HrLineView>
                         <Text style={styles.heading}>Sub Password List</Text>
@@ -80,7 +144,7 @@ export default class EditPasswordItem extends Component {
                                             placeholder="Enter Password Label"
                                             placeholderTextColor={COLORS.inputPlaceholder}
                                             defaultValue={item.password_label}
-                                            onChange={(e) => this.onInputChange(e, index, 'password_label')}
+                                            onChangeText={(e) => this.onListInputChange(e, index, 'password_label')}
                                         />
                                         <View style={styles.subItemPasswordContainer}>
                                             <TextInput
@@ -88,7 +152,7 @@ export default class EditPasswordItem extends Component {
                                                 placeholder="Enter Password Stream"
                                                 placeholderTextColor={COLORS.inputPlaceholder}
                                                 defaultValue={item.password_stream}
-                                                onChange={(e) => this.onInputChange(e, index, 'password_stream')}
+                                                onChangeText={(e) => this.onListInputChange(e, index, 'password_stream')}
                                             />
                                             <TouchableOpacity style={styles.generateIcon}>
                                                 <Icon name="wifi-protected-setup" size={20} color={COLORS.lightBlue} />
@@ -110,7 +174,7 @@ export default class EditPasswordItem extends Component {
                         />
                     </HrLineView>
                 </View>
-            </View>
+            </ScrollView>
         )
     }
 }

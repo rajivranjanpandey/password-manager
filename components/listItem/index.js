@@ -9,7 +9,7 @@ export default class ListItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            expanded: true,
+            expanded: false,
         };
         // For use pf LayoutAnimation in android we need to enable it.
         if (Platform.OS === 'android') {
@@ -42,7 +42,7 @@ export default class ListItem extends Component {
                                 renderItem={({ item, index }) => {
                                     const isLast = index === parentItem.platform_passwords.length - 1;
                                     return (
-                                        <View style={[styles.childItemContainer, { marginBottom: isLast ? 0 : 3 }]}>
+                                        <View style={[styles.childItemContainer, { marginBottom: isLast ? 0 : 10 }]}>
                                             <View style={styles.childSubContainer}>
                                                 <Icon name={'fiber-manual-record'} size={10} color={'#c6c4c4'} />
                                                 <Text style={styles.childText}>{item.password_label}</Text>

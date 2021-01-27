@@ -67,7 +67,7 @@ export const listItemStyle = StyleSheet.create({
     childPassword: {
         // borderWidth: 2,
         // borderColor: COLORS.white,
-        marginTop: 3,
+        marginTop: 2,
         marginLeft: 17,
         marginRight: 10,
         color: COLORS.lightWhite,

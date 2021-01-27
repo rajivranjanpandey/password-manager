@@ -11,6 +11,7 @@ import Home from '../../../screens/home';
 import PasswordList from '../../../screens/passwordList';
 import EditPasswordItem from '../../../screens/editPasswordItem';
 import Settings from '../../../screens/settings';
+import { getTabBarVisibility } from '../navigatorHelpers';
 // import { MobXProviderContext } from 'mobx-react';
 
 const MyTheme = {
@@ -109,8 +110,15 @@ function VaultTabRouter() {
             initialRouteName="Vault"
             lazy={true}//loads component only when tab is activated
         >
-            <NavigationTab.Screen name="Vault" component={VaultStack} />
-            <NavigationTab.Screen name="Settings" component={Settings} />
+            <NavigationTab.Screen
+                options={({ route }) => ({
+                    tabBarVisible: getTabBarVisibility(route)
+                })}
+                name="Vault"
+                component={VaultStack} />
+            <NavigationTab.Screen
+                name="Settings"
+                component={Settings} />
         </NavigationTab.Navigator>
     )
 }
@@ -136,7 +144,11 @@ function VaultStack() {
             <NavigationStack.Screen
                 name="EditItem"
                 component={EditPasswordItem}
-                options={({ route }) => ({ title: route.params.title, headerLeftContainerStyle: { marginLeft: -15 }, headerTitleStyle: { marginLeft: -20 } })}
+                options={({ route }) => ({
+                    title: route.params.title,
+                    headerLeftContainerStyle: { marginLeft: -15 },
+                    headerTitleStyle: { marginLeft: -20 },
+                })}
             />
         </NavigationStack.Navigator>
     )

@@ -13,6 +13,9 @@ export const formStyle = StyleSheet.create({
         // paddingLeft: 10,
         padding: 12,
     },
+    errorNameInput: {
+        borderColor: COLORS.lightRed
+    },
     subListContainer: {
         borderLeftColor: COLORS.darkGrey,
         borderLeftWidth: 2,
