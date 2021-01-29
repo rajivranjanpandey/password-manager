@@ -7,3 +7,10 @@ export const getPasswordList = (payload) => {
     };
     return request('/customer/user_passwords', options, true);
 };
+export const updatePasswordListItemApi = (payload) => {
+    const options = {
+        method: 'put',
+        params: payload.data,
+    }
+    return request(`/customer/user_passwords/${payload.itemId}`, options, true);
+}

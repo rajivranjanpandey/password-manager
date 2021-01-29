@@ -27,6 +27,7 @@ export default class ItemModel {
             console.log(e)
         }
     }
+
     setItemList(payload) {
         this.itemList += payload;
     }

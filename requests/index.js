@@ -16,6 +16,7 @@ const errorHandler = (errorObj, url) => {
             showMessage(message, 'error');
             break;
         case 401:
+            console.log('401 occured');
             userLogout()
             break;
     }
@@ -30,6 +31,11 @@ const methodHandler = async (options) => {
         case 'post':
             return axios
                 .post(options.url, options.params, { headers: BASE_REQUEST.headers })
+                .then(res => { return res.data; })
+                .catch(e => { console.log(e); errorHandler(e.response); return null });
+        case 'put':
+            return axios
+                .put(options.url, options.params, { headers: BASE_REQUEST.headers })
                 .then(res => { return res.data; })
                 .catch(e => { console.log(e); errorHandler(e.response); return null });
     }

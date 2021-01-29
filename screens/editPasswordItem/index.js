@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Button, KeyboardAvoidingView, LayoutAnimation, Text, TextInput, TouchableOpacity, View, ScrollView } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import CustomButton from '../../components/customButton';
+import PasswordListModel from '../../models/passwordListModel';
 import { COLORS } from '../../utils/misc/colors';
 import { formStyle, addBtnStyle } from './editPasswordItem_style';
 
@@ -71,6 +72,7 @@ export default class EditPasswordItem extends Component {
                     tempList = this.state.list.slice(0, this.state.list.length - 1);
             }
             tempList.forEach((entry, index) => {
+                delete entry._id;
                 if (!entry.password_label?.length || !entry.password_stream?.length) {
                     isError = true;
                     tempErrorState[index] = { 'isError': true, 'message': 'Please fill the required fields' }
@@ -85,15 +87,21 @@ export default class EditPasswordItem extends Component {
         }
         return { isError, tempList };
     }
-    onSave = () => {
+    onSave = async () => {
         const { isError, tempList: pwdList } = this.checkForErrors();
         if (!isError) {
             const payload = {
                 itemId: this.itemDetails._id,
-                platform_name: this.state.platformName,
-                platform_passwords: pwdList
+                data: {
+                    platform_name: this.state.platformName,
+                    platform_passwords: pwdList
+                }
             }
-            console.log(payload);
+            const obj = new PasswordListModel();
+            const response = await obj.updatePasswordListItem(payload);
+            console.log(response);
+            if (response)
+                this.props.navigation.goBack();
         }
         this.setState({ isError });
     }

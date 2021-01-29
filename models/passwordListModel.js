@@ -1,5 +1,5 @@
 import { makeAutoObservable, flow, observable, autorun } from 'mobx';
-import { getPasswordList } from '../requests/vaultApi';
+import { getPasswordList, updatePasswordListItemApi } from '../requests/vaultApi';
 
 export default class PasswordListModel {
     storedPasswordList = [];
@@ -7,6 +7,7 @@ export default class PasswordListModel {
     constructor() {
         makeAutoObservable(this, {
             fetchPasswordList: flow,
+            updatePasswordListItem: flow
         });
         autorun(() => this.passwordList);
 
@@ -21,6 +22,18 @@ export default class PasswordListModel {
             }
         } catch (e) {
             console.log(e);
+        }
+    }
+    *updatePasswordListItem(payload) {
+        try {
+            const response = yield updatePasswordListItemApi(payload);
+            if (response) {
+                this.storedPasswordList = response;
+                return response;
+
+            }
+        } catch (e) {
+            console.log(e)
         }
     }
 

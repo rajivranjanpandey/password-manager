@@ -14,15 +14,12 @@ function AuthChecker(props) {
     };
     const renderElements = React.useMemo(() => {
         let elements;
-        if (token) {
-            elements = React.Children.map(props.children, (child) => {
-                if (React.isValidElement(child))
-                    return React.cloneElement(child, { userToken: token });
-                return child;
-            });
-        } else {
-            elements = <SplashScreen />
-        }
+        elements = React.Children.map(props.children, (child) => {
+            if (React.isValidElement(child))
+                return React.cloneElement(child, { userToken: token });
+            return child;
+        });
+
         return elements;
     }, [token, props.children]);
     React.useEffect(() => {
