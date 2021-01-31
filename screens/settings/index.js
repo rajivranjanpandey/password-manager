@@ -4,19 +4,52 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { showImagePicker } from 'react-native-image-picker';
 import { COLORS } from '../../utils/misc/colors';
 import { settingsStyle } from './settings_style';
+import { observer } from 'mobx-react';
+import dataModels from '../../utils/misc/config/index-model';
 
-export default class Settings extends Component {
+class Settings extends Component {
     state = {
         editName: false,
-        editMobile: false
+        editMobile: false,
+        error: { isError: false, message: '' }
     }
-    onEditClick = (stateName) => {
-        this.setState((prevState) => ({ [stateName]: !prevState[stateName] }), () => {
-            if (this.state.editName) {
-                const refInput = this[`${stateName}Input`];
-                refInput.focus();
+    static contextType = dataModels.UserModel;
+    onEditClick = async (stateName) => {
+        if (this.state[stateName]) {
+            const errorObj = this.state.error;
+            const value = this[`${stateName}Input`];
+            const payload = { name: this.editNameInput.value, mobile: this.editMobileInput.value };
+            if (!value.length) {
+                errorObj.isError = true;
+                errorObj.message = 'Required field';
+            } else if (stateName === 'editMobile') {
+                if (value.length < 10) {
+                    errorObj.isError = true;
+                    errorObj.message = 'Mobile Number should be of 10 digits';
+                } else {
+                    errorObj.isError = false;
+                    errorObj.message = '';
+                    payload.mobile = Number(value);
+                }
+            } else {
+                errorObj.isError = false;
+                errorObj.message = '';
             }
-        });
+            if (errorObj.isError) {
+                this.setState({ error: errorObj });
+            } else {
+                this.state.error = errorObj;
+                this.state[stateName] = !this.state[stateName];
+                const response = await this.context.userDetails.updateUserDetails(payload);
+            }
+        } else {
+            this.setState((prevState) => ({ [stateName]: !prevState[stateName] }), () => {
+                if (this.state[stateName]) {
+                    const refInput = this[`${stateName}Input`];
+                    refInput.focus();
+                }
+            });
+        }
     }
     onImgChoseClick = () => {
         console.log('imgCLick')
@@ -30,6 +63,13 @@ export default class Settings extends Component {
         showImagePicker(options, (response) => console.log(response));
     }
     render() {
+        let key = `${this.state.editName}_settings`;
+        let objVal = { name: '', mobile: '' };
+        if (this.context.userDetails) {
+            key = `${this.state.editName}_settings_data`;
+            objVal.name = this.context.userDetails.name || '';
+            objVal.mobile = this.context.userDetails.mobile;
+        }
         return (
             <View style={styles.mainContainer}>
                 <View style={styles.userContainer}>
@@ -44,15 +84,15 @@ export default class Settings extends Component {
                         <View style={styles.inputContainer}>
                             <Text style={styles.inputLabel}>Name</Text>
                             <TextInput
-                                key={`${this.state.editName}-name`}
+                                key={`${key}-name`}
                                 ref={ref => this.editNameInput = ref}
                                 keyboardType="name-phone-pad"
-                                defaultValue={'Rajiv Ranjan Pandey'}
+                                defaultValue={objVal.name}
                                 style={styles.userInput}
                                 editable={this.state.editName}
                             />
                         </View>
-                        <Icon name={this.state.editName ? 'close' : 'pencil'} size={20} color={COLORS.lightWhite} style={styles.settingIcon} onPress={() => this.onEditClick('editName')} />
+                        <Icon name={this.state.editName ? 'done' : 'pencil'} size={20} color={COLORS.lightWhite} style={styles.settingIcon} onPress={() => this.onEditClick('editName')} />
 
                     </View>
                     <View style={styles.itemSetting}>
@@ -60,17 +100,22 @@ export default class Settings extends Component {
                         <View style={styles.inputContainer}>
                             <Text style={styles.inputLabel}>Mobile Number</Text>
                             <TextInput
-                                key={`${this.state.editName}-mobile`}
+                                key={`${key}-mobile`}
                                 ref={ref => this.editMobileInput = ref}
-                                keyboardType="phone-pad"
-                                defaultValue={'8981215328'}
+                                keyboardType="tel"
+                                defaultValue={objVal.mobile}
                                 style={styles.userInput}
+                                maxLength={10}
                                 editable={this.state.editMobile}
                             />
                         </View>
-                        <Icon name={this.state.editMobile ? 'close' : 'pencil'} size={20} color={COLORS.lightWhite} style={styles.settingIcon} onPress={() => this.onEditClick('editMobile')} />
+                        <Icon name={this.state.editMobile ? 'done' : 'pencil'} size={20} color={COLORS.lightWhite} style={styles.settingIcon} onPress={() => this.onEditClick('editMobile')} />
                     </View>
                 </View>
+                {
+                    this.state.error.isError &&
+                    <Text style={styles.errorText}>{this.state.error.message}</Text>
+                }
                 <KeyboardAvoidingView style={styles.logoutContainer}>
                     <Icon name="lock" size={18} color={COLORS.lightWhite} style={styles.logoutIcon} />
                     <Text style={styles.logoutText}>Logout</Text>
@@ -80,3 +125,5 @@ export default class Settings extends Component {
     }
 }
 const styles = settingsStyle;
+
+export default observer(Settings);

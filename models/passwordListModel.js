@@ -1,4 +1,4 @@
-import { makeAutoObservable, flow, observable, autorun } from 'mobx';
+import { makeAutoObservable, flow, autorun } from 'mobx';
 import { getPasswordList, updatePasswordListItemApi } from '../requests/vaultApi';
 
 export default class PasswordListModel {

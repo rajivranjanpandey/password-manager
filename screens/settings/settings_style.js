@@ -66,6 +66,11 @@ export const settingsStyle = StyleSheet.create({
         marginVertical: -4,
         color: COLORS.white
     },
+    errorText: {
+        color: COLORS.lightRed,
+        fontWeight: 500,
+        fontSize: 15,
+    },
     logoutContainer: {
         display: 'flex',
         flexDirection: 'row',
