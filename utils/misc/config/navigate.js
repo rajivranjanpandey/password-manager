@@ -12,6 +12,7 @@ import PasswordList from '../../../screens/passwordList';
 import EditPasswordItem from '../../../screens/editPasswordItem';
 import Settings from '../../../screens/settings';
 import { getTabBarVisibility } from '../navigatorHelpers';
+import CreatePasswordItem from '../../../screens/createPasswordItem';
 // import { MobXProviderContext } from 'mobx-react';
 
 const MyTheme = {
@@ -140,6 +141,15 @@ function VaultStack() {
                 options={{
                     headerShown: false,
                 }}
+            />
+            <NavigationStack.Screen
+                name="CreateItem"
+                component={CreatePasswordItem}
+                options={({ route }) => ({
+                    title: 'Create New Record',
+                    headerLeftContainerStyle: { marginLeft: -15 },
+                    headerTitleStyle: { marginLeft: -20 },
+                })}
             />
             <NavigationStack.Screen
                 name="EditItem"

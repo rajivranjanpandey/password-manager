@@ -68,7 +68,7 @@ export const settingsStyle = StyleSheet.create({
     },
     errorText: {
         color: COLORS.lightRed,
-        fontWeight: 500,
+        fontWeight: '500',
         fontSize: 15,
     },
     logoutContainer: {

@@ -48,7 +48,7 @@ export default class ListItem extends Component {
                                                 <Text style={styles.childText}>{item.password_label}</Text>
                                             </View>
                                             <View style={styles.childSubContainer}>
-                                                <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.childPassword}>sjdgsjdgjsgdjgsjdgjsgdkjgskdgkjgsdkjgjkdgkjgfkjdgkfjgkjdfgksgdfkjsgdjfgsj</Text>
+                                                <Text numberOfLines={1} ellipsizeMode={'tail'} style={styles.childPassword}>{item.password_stream}</Text>
                                                 <Icon name={'content-paste'} size={18} color={COLORS.lightBlue} />
 
                                             </View>

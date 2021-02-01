@@ -14,7 +14,14 @@ export const verifyOtpApi = (payload) => {
     };
     return request('/client/users/verify-otp', options, false);
 }
-export const updateUserDetails = (payload) => {
+export const getUserDetailsApi = () => {
+    const options = {
+        method: 'get',
+        params: {},
+    };
+    return request('/client/customer/profile', options, true);
+}
+export const updateUserDetailsApi = (payload) => {
     const options = {
         method: 'put',
         params: payload,

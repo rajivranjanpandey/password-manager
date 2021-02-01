@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { makeAutoObservable, flow, observable, autorun } from 'mobx';
-import { getOtpApi, verifyOtpApi, updateUserDetails } from '../requests/usersApi';
+import { getOtpApi, verifyOtpApi, updateUserDetailsApi, getUserDetailsApi } from '../requests/usersApi';
 import showMessage from '../utils/error';
 
 export default class UserModel {
@@ -9,7 +9,8 @@ export default class UserModel {
     constructor() {
         makeAutoObservable(this, {
             getOtp: flow,
-            verifyOtp: flow
+            verifyOtp: flow,
+            updateUserDetails: flow
         });
         autorun(() => this.getUserDetails);
 
@@ -43,9 +44,20 @@ export default class UserModel {
             return null;
         }
     }
+    *getUserDetailsAction() {
+        try {
+            const response = yield getUserDetailsApi();
+            if (response) {
+                this.userDetails = response;
+            }
+        } catch (e) {
+            console.log(e)
+            return null;
+        }
+    }
     *updateUserDetails(payload) {
         try {
-            const response = yield updateUserDetails(payload);
+            const response = yield updateUserDetailsApi(payload);
             if (response) {
                 this.userDetails = response;
                 return response;

@@ -1,5 +1,5 @@
 import { makeAutoObservable, flow, autorun } from 'mobx';
-import { getPasswordList, updatePasswordListItemApi } from '../requests/vaultApi';
+import { createPasswordListItemApi, getPasswordList, updatePasswordListItemApi } from '../requests/vaultApi';
 
 export default class PasswordListModel {
     storedPasswordList = [];
@@ -22,6 +22,17 @@ export default class PasswordListModel {
             }
         } catch (e) {
             console.log(e);
+        }
+    }
+    *createPasswordList(payload) {
+        try {
+            const response = yield createPasswordListItemApi(payload);
+            if (response) {
+                return true;
+            }
+        } catch (e) {
+            console.log(e);
+            return null;
         }
     }
     *updatePasswordListItem(payload) {

@@ -7,6 +7,13 @@ export const getPasswordList = (payload) => {
     };
     return request('/customer/user_passwords', options, true);
 };
+export const createPasswordListItemApi = (payload) => {
+    const options = {
+        method: 'post',
+        params: payload,
+    }
+    return request('/customer/user_passwords', options, true);
+};
 export const updatePasswordListItemApi = (payload) => {
     const options = {
         method: 'put',

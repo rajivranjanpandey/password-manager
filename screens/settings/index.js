@@ -14,6 +14,9 @@ class Settings extends Component {
         error: { isError: false, message: '' }
     }
     static contextType = dataModels.UserModel;
+    async componentDidMount() {
+        await this.context.getUserDetailsAction();
+    }
     onEditClick = async (stateName) => {
         if (this.state[stateName]) {
             const errorObj = this.state.error;
@@ -40,7 +43,7 @@ class Settings extends Component {
             } else {
                 this.state.error = errorObj;
                 this.state[stateName] = !this.state[stateName];
-                const response = await this.context.userDetails.updateUserDetails(payload);
+                const response = await this.context.updateUserDetails(payload);
             }
         } else {
             this.setState((prevState) => ({ [stateName]: !prevState[stateName] }), () => {
@@ -65,6 +68,7 @@ class Settings extends Component {
     render() {
         let key = `${this.state.editName}_settings`;
         let objVal = { name: '', mobile: '' };
+        console.log(this.context);
         if (this.context.userDetails) {
             key = `${this.state.editName}_settings_data`;
             objVal.name = this.context.userDetails.name || '';
@@ -102,7 +106,7 @@ class Settings extends Component {
                             <TextInput
                                 key={`${key}-mobile`}
                                 ref={ref => this.editMobileInput = ref}
-                                keyboardType="tel"
+                                keyboardType="number-pad"
                                 defaultValue={objVal.mobile}
                                 style={styles.userInput}
                                 maxLength={10}
