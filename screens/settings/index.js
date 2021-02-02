@@ -15,13 +15,18 @@ class Settings extends Component {
     }
     static contextType = dataModels.UserModel;
     async componentDidMount() {
-        await this.context.getUserDetailsAction();
+        this.props.navigation.addListener('focus', async () => {
+            await this.context.getUserDetailsAction();
+
+        });
     }
     onEditClick = async (stateName) => {
         if (this.state[stateName]) {
             const errorObj = this.state.error;
             const value = this[`${stateName}Input`];
+
             const payload = { name: this.editNameInput.value, mobile: this.editMobileInput.value };
+            console.log('payload', payload)
             if (!value.length) {
                 errorObj.isError = true;
                 errorObj.message = 'Required field';
@@ -48,7 +53,7 @@ class Settings extends Component {
         } else {
             this.setState((prevState) => ({ [stateName]: !prevState[stateName] }), () => {
                 if (this.state[stateName]) {
-                    const refInput = this[`${stateName}Input`];
+                    const refInput = this[`${stateName}Ref`];
                     refInput.focus();
                 }
             });
@@ -72,7 +77,7 @@ class Settings extends Component {
         if (this.context.userDetails) {
             key = `${this.state.editName}_settings_data`;
             objVal.name = this.context.userDetails.name || '';
-            objVal.mobile = this.context.userDetails.mobile;
+            objVal.mobile = this.context.userDetails.mobile + '';
         }
         return (
             <View style={styles.mainContainer}>
@@ -89,14 +94,22 @@ class Settings extends Component {
                             <Text style={styles.inputLabel}>Name</Text>
                             <TextInput
                                 key={`${key}-name`}
-                                ref={ref => this.editNameInput = ref}
+                                ref={ref => this.editNameRef = ref}
                                 keyboardType="name-phone-pad"
                                 defaultValue={objVal.name}
                                 style={styles.userInput}
                                 editable={this.state.editName}
+                                onTextInput={val => { this.editNameInput = { value: val } }}
                             />
                         </View>
-                        <Icon name={this.state.editName ? 'done' : 'pencil'} size={20} color={COLORS.lightWhite} style={styles.settingIcon} onPress={() => this.onEditClick('editName')} />
+
+                        <Icon
+                            name={this.state.editName ? 'done' : 'pencil'}
+                            size={20}
+                            color={COLORS.lightWhite}
+                            style={styles.settingIcon}
+                            onPress={() => this.onEditClick('editName')}
+                        />
 
                     </View>
                     <View style={styles.itemSetting}>
@@ -105,7 +118,7 @@ class Settings extends Component {
                             <Text style={styles.inputLabel}>Mobile Number</Text>
                             <TextInput
                                 key={`${key}-mobile`}
-                                ref={ref => this.editMobileInput = ref}
+                                ref={ref => this.editMobileRef = ref}
                                 keyboardType="number-pad"
                                 defaultValue={objVal.mobile}
                                 style={styles.userInput}

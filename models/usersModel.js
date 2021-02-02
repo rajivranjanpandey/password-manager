@@ -47,7 +47,10 @@ export default class UserModel {
     *getUserDetailsAction() {
         try {
             const response = yield getUserDetailsApi();
+            console.log('response', response)
+
             if (response) {
+                console.log('response', response)
                 this.userDetails = response;
             }
         } catch (e) {

@@ -28,7 +28,8 @@ const NavigationTab = createBottomTabNavigator();
 export default function IndexRouter(props) {
     React.useEffect(() => {
         console.log('component_did_mount');
-    }, [])
+    }, []);
+    console.log('token', props.userToken)
     return (
         <NavigationContainer theme={MyTheme}>
             <View style={{

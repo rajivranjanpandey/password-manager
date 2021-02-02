@@ -19,12 +19,12 @@ export const getUserDetailsApi = () => {
         method: 'get',
         params: {},
     };
-    return request('/client/customer/profile', options, true);
+    return request('/customer/profile', options, true);
 }
 export const updateUserDetailsApi = (payload) => {
     const options = {
         method: 'put',
         params: payload,
     };
-    return request('/client/customer/profile', options, true);
+    return request('/customer/profile', options, true);
 }

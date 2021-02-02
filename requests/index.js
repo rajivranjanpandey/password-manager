@@ -19,6 +19,9 @@ const errorHandler = (errorObj, url) => {
             console.log('401 occured');
             userLogout()
             break;
+        case 500:
+            showMessage(message, 'error');
+            break;
     }
 }
 const methodHandler = async (options) => {

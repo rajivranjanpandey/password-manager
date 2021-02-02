@@ -6,7 +6,7 @@ import { observer } from 'mobx-react';
 import SplashScreen from '../splashScreen';
 
 function AuthChecker(props) {
-    const [token, setToken] = React.useState(null);
+    const [token, setToken] = React.useState(false);
     const userRef = React.useContext(dataModels.UserModel);
     const renderIntialScreen = async () => {
         const userToken = await AsyncStorage.getItem('@token');
@@ -14,12 +14,15 @@ function AuthChecker(props) {
     };
     const renderElements = React.useMemo(() => {
         let elements;
-        elements = React.Children.map(props.children, (child) => {
-            if (React.isValidElement(child))
-                return React.cloneElement(child, { userToken: token });
-            return child;
-        });
-
+        if (token === false) {
+            elements = <SplashScreen />
+        } else {
+            elements = React.Children.map(props.children, (child) => {
+                if (React.isValidElement(child))
+                    return React.cloneElement(child, { userToken: token });
+                return child;
+            });
+        }
         return elements;
     }, [token, props.children]);
     React.useEffect(() => {
