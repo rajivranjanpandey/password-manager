@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { observer } from 'mobx-react';
 import React from 'react';
-import { View, SafeAreaView, StatusBar, Text, TextInput, TouchableOpacity, Animated, LayoutAnimation, Platform, UIManager, Keyboard } from 'react-native';
+import { View, SafeAreaView, StatusBar, Text, TextInput, TouchableOpacity, Animated, LayoutAnimation, Platform, UIManager, Keyboard, Image } from 'react-native';
 import dataModels from '../../utils/misc/config/index-model';
 import { HomeStyle } from './home_style';
 
@@ -84,8 +84,11 @@ class Home extends React.Component {
                 <StatusBar backgroundColor={styles.statusBar.backgroundColor} />
                 <SafeAreaView>
                     <View style={styles.container}>
-                        <View style={styles.logoArea}>
-                            {/* <Text>{this.props.itemModel.passwordList}</Text> */}
+                        <View style={styles.bannerArea}>
+
+                        </View>
+                        <View style={styles.logoContainer}>
+                            <Image source={require('../../assets/images/logo.jpg')} style={styles.logoImg} />
                         </View>
                         <View style={styles.centerArea}>
                             {

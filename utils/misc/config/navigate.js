@@ -11,7 +11,7 @@ import Home from '../../../screens/home';
 import PasswordList from '../../../screens/passwordList';
 import EditPasswordItem from '../../../screens/editPasswordItem';
 import Settings from '../../../screens/settings';
-import { getTabBarVisibility } from '../navigatorHelpers';
+import { getTabBarVisibility, navigationRef } from '../navigatorHelpers';
 import CreatePasswordItem from '../../../screens/createPasswordItem';
 // import { MobXProviderContext } from 'mobx-react';
 
@@ -31,7 +31,7 @@ export default function IndexRouter(props) {
     }, []);
     console.log('token', props.userToken)
     return (
-        <NavigationContainer theme={MyTheme}>
+        <NavigationContainer ref={navigationRef} theme={MyTheme}>
             <View style={{
                 backgroundColor: COLORS.darkBlue,
                 height: '100%',

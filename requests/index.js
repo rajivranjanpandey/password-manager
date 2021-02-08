@@ -17,7 +17,7 @@ const errorHandler = (errorObj, url) => {
             break;
         case 401:
             console.log('401 occured');
-            userLogout()
+            userLogout();
             break;
         case 500:
             showMessage(message, 'error');

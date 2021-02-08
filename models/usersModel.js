@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { makeAutoObservable, flow, observable, autorun } from 'mobx';
 import { getOtpApi, verifyOtpApi, updateUserDetailsApi, getUserDetailsApi } from '../requests/usersApi';
 import showMessage from '../utils/error';
+import { onTheAirNavigate } from '../utils/misc/navigatorHelpers';
 
 export default class UserModel {
     userDetails = null;
@@ -73,6 +74,7 @@ export default class UserModel {
     *onLogout() {
         yield AsyncStorage.removeItem('@token');
         this.userDetails = null;
+        onTheAirNavigate('Home');
     }
     get getUserDetails() {
         console.log('comutation_called');
